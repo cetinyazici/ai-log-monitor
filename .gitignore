@@ -1,0 +1,4 @@
+﻿.env
+target/
+*.log
+db_data/
