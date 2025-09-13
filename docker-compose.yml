@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:15
+    container_name: ai_log_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    container_name: ai_log_backend
+    ports:
+      - "8081:8080"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      POSTGRES_DB: ${POSTGRES_DB}
+    depends_on:
+      - db
+
+  agent:
+    image: alpine:latest
+    container_name: ai_log_agent
+    volumes:
+      - ./agent/logs:/logs
+    command: sh -c "while true; do sleep 10; done" # placeholder, sonra log script ekle
+
+volumes:
+  db_data:
