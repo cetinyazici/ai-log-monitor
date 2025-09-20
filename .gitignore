@@ -1,4 +1,5 @@
 ﻿.env
 target/
-*.log
+agent/logs/*
+!agent/logs/app.log
 db_data/
